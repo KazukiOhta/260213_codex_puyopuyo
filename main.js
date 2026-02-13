@@ -4,6 +4,8 @@ const nextCanvas = document.getElementById('next');
 const nextCtx = nextCanvas.getContext('2d');
 const next2Canvas = document.getElementById('next2');
 const next2Ctx = next2Canvas.getContext('2d');
+const chainEl = document.getElementById('chain');
+const maxChainEl = document.getElementById('max-chain');
 const { createField, placeCells, applyGravity, findMatches } = window.PuyoCore;
 
 const COLS = 6;
@@ -37,6 +39,8 @@ let clearTimer = 0;
 let clearBlinkTimer = 0;
 let clearCells = new Set();
 let clearList = [];
+let currentChain = 0;
+let maxChain = 0;
 
 function randomColor() {
   return 1 + Math.floor(Math.random() * 4);
@@ -64,6 +68,8 @@ function resetGame() {
   clearBlinkTimer = 0;
   clearCells = new Set();
   clearList = [];
+  currentChain = 0;
+  updateChainDisplay();
 }
 
 function spawnPair() {
@@ -142,6 +148,8 @@ function lockPair() {
   current = null;
   applyGravity(field);
   dropTimer = 0;
+  currentChain = 0;
+  updateChainDisplay();
   resolveClears();
 }
 
@@ -161,6 +169,8 @@ function startSpawnDelay() {
   clearBlinkTimer = 0;
   clearCells = new Set();
   clearList = [];
+  currentChain = 0;
+  updateChainDisplay();
 }
 
 function startClearing(matches) {
@@ -169,6 +179,11 @@ function startClearing(matches) {
   clearBlinkTimer = 0;
   clearList = matches;
   clearCells = new Set(matches.map((cell) => `${cell.x},${cell.y}`));
+  currentChain += 1;
+  if (currentChain > maxChain) {
+    maxChain = currentChain;
+  }
+  updateChainDisplay(true);
 }
 
 function update(delta) {
@@ -325,6 +340,19 @@ function loop(timestamp) {
   renderNext();
 
   requestAnimationFrame(loop);
+}
+
+function updateChainDisplay(pop = false) {
+  if (!chainEl || !maxChainEl) return;
+  chainEl.textContent = String(currentChain);
+  maxChainEl.textContent = String(maxChain);
+  if (pop) {
+    chainEl.classList.remove('pop');
+    maxChainEl.classList.remove('pop');
+    void chainEl.offsetWidth;
+    chainEl.classList.add('pop');
+    maxChainEl.classList.add('pop');
+  }
 }
 
 window.addEventListener('keydown', (e) => {

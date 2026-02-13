@@ -10,13 +10,28 @@
   <main class="page">
     <section class="panel">
       <header>
-        <h1>ぷよぷよ最小実装</h1>
-        <p>4色・落下と消去のみ（スコアなし）</p>
+        <h1>Puyo Chain Arena</h1>
+        <p>4色・落下と消去で連鎖に挑戦</p>
       </header>
 
       <div class="content">
-        <canvas id="game" width="360" height="720" aria-label="puyo board"></canvas>
+        <div class="board">
+          <canvas id="game" width="360" height="720" aria-label="puyo board"></canvas>
+        </div>
         <div class="side">
+          <div class="box stats">
+            <h2>連鎖記録</h2>
+            <div class="stats-grid">
+              <div class="stat">
+                <div class="stat-label">現在</div>
+                <div id="chain" class="stat-value">0</div>
+              </div>
+              <div class="stat">
+                <div class="stat-label">最大</div>
+                <div id="max-chain" class="stat-value">0</div>
+              </div>
+            </div>
+          </div>
           <div class="box">
             <h2>操作</h2>
             <ul>
@@ -31,14 +46,14 @@
             <canvas id="next" width="120" height="120" aria-label="next pair"></canvas>
           </div>
           <div class="box">
-            <h2>ネクネク</h2>
+            <h2>次の次</h2>
             <canvas id="next2" width="120" height="120" aria-label="next next pair"></canvas>
           </div>
         </div>
       </div>
 
       <footer>
-        <p class="note">最小構成の実験用サンドボックスです。</p>
+        <p class="note">連鎖で自己ベスト更新を狙おう。</p>
       </footer>
     </section>
   </main>
